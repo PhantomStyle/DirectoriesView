@@ -3,6 +3,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -33,8 +34,10 @@ public class ListViewChanger {
                     public void changed(ObservableValue<? extends String> observable,
                                         String oldValue, String newValue) {
                         if (viewList.indexOf(listView) < viewList.size() - 1) {
-                            for (int i = viewList.indexOf(listView) + 1; i < viewList.size(); i++) {
+                            int size = viewList.size();
+                            for (int i = viewList.size() - 1; i >= viewList.indexOf(listView) + 1; i--) {
                                 viewList.remove(i);
+//                                b.getChildren().remove(viewList.remove(i));
                                 try {
                                     filesList.remove(i - 1);
                                 } catch (IndexOutOfBoundsException ex) {
@@ -45,7 +48,6 @@ public class ListViewChanger {
                             }
                         }
                         ListView<String> listViewNew = getNewListView(b);
-//                        if (listView.getSelectionModel().getSelectedItems().size() == 1) {
 
                         String name = "";
                         if (filesList.get(filesList.size() - 1).getAbsolutePath().endsWith("\\")) {
@@ -73,8 +75,11 @@ public class ListViewChanger {
             public void handle(MouseEvent mouseEvent) {
                 if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                     if (mouseEvent.getClickCount() == 2) {
-                        for (int i = viewList.size() - 1; i > viewList.indexOf(listView); i--) {
+                        int size = viewList.size();
+                        int index = viewList.indexOf(listView);
+                        for (int i = viewList.size() - 1; i > index; i--) {
                             viewList.remove(i);
+//                            b.getChildren().remove(viewList.remove(i));
                             try {
                                 filesList.remove(i - 1);
                             } catch (IndexOutOfBoundsException ex) {

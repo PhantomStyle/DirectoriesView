@@ -22,6 +22,11 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         ScrollPane scrollPane = new ScrollPane();
         GridPane b = new GridPane();
+        TextField textField = new TextField();
+        Button textButton = new Button();
+//        b.add(textField, 0, 2);
+//        b.add(textButton, 1, 2);
+        textButton.setText("Find");
         Button c = new Button("Load Folder");
         ListViewChanger listViewChanger = new ListViewChanger();
         c.setOnAction(new EventHandler<ActionEvent>() {
@@ -42,11 +47,16 @@ public class Main extends Application {
                 } else {
                     listViewChanger.column = 2;
                     //TODO: когда заново выбираем, косячим
+                    //TODO: на начальную вьюху повесить функционал с удалением
                     if (listViewChanger.viewList.get(0).getItems().size() != 0) {
                         listViewChanger.viewList.get(0).getItems().clear();
                     }
-                    for (int i = 1; i < listViewChanger.viewList.size(); i++) {
-                        listViewChanger.viewList.remove(i);
+                    int size = listViewChanger.viewList.size();
+                    for (int i = listViewChanger.viewList.size() - 1; i >= 1; i--) {
+                        b.getChildren().remove(listViewChanger.viewList.remove(i));
+                    }
+                    for (int i = listViewChanger.filesList.size() - 1; i >= 1; i--) {
+                        listViewChanger.filesList.remove(i);
                     }
                     String name = choice.getName().equals("") ? choice.getAbsolutePath() : choice.getName();
                     name = name.replace("\\", "");
@@ -54,6 +64,8 @@ public class Main extends Application {
                 }
             }
         });
+
+        //TODO:когда возвращаемся назад, он не обновляет почему-то следующую папку
 //        c.setOnMouseClicked(new EventHandler<MouseEvent>() {
 //            @Override
 //            public void handle(MouseEvent mouseEvent) {
