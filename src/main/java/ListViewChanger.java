@@ -32,10 +32,14 @@ public class ListViewChanger {
                 .addListener(new ChangeListener<String>() {
                     public void changed(ObservableValue<? extends String> observable,
                                         String oldValue, String newValue) {
-                        if(viewList.indexOf(listView) < viewList.size() - 1){
-                            for(int i = viewList.indexOf(listView); i < viewList.size(); i++){
+                        if (viewList.indexOf(listView) < viewList.size() - 1) {
+                            for (int i = viewList.indexOf(listView) + 1; i < viewList.size(); i++) {
                                 viewList.remove(i);
-                                filesList.remove(i);
+                                try {
+                                    filesList.remove(i - 1);
+                                } catch (IndexOutOfBoundsException ex) {
+                                    System.out.println("Last file");
+                                }
                                 b.getChildren().remove(column);
                                 column--;
                             }
@@ -44,23 +48,23 @@ public class ListViewChanger {
 //                        if (listView.getSelectionModel().getSelectedItems().size() == 1) {
 
                         String name = "";
-                        if(filesList.get(filesList.size() - 1).getAbsolutePath().endsWith("\\")){
+                        if (filesList.get(filesList.size() - 1).getAbsolutePath().endsWith("\\")) {
                             name = filesList.get(filesList.size() - 1).getAbsolutePath()
                                     + viewList.get(column - 1).getSelectionModel().getSelectedItems().get(0);
                         } else {
                             name = filesList.get(filesList.size() - 1).getAbsolutePath() + "\\"
                                     + viewList.get(column - 1).getSelectionModel().getSelectedItems().get(0);
                         }
-                            File selectedFile = new File(name);
+                        File selectedFile = new File(name);
+                        if (selectedFile.isDirectory()) {
                             viewList.add(listViewNew);
-                            if(selectedFile.isDirectory()) {
-                                File[] files = selectedFile.listFiles();
-                                for (File f : files) {
-                                    viewList.get(column).getItems().add(f.getName());
-                                }
-                                filesList.add(selectedFile);
-                                b.add(listViewNew, column++, 1);
+                            File[] files = selectedFile.listFiles();
+                            for (File f : files) {
+                                viewList.get(column).getItems().add(f.getName());
                             }
+                            filesList.add(selectedFile);
+                            b.add(listViewNew, column++, 1);
+                        }
 //                        }
                     }
                 });
@@ -69,7 +73,16 @@ public class ListViewChanger {
             public void handle(MouseEvent mouseEvent) {
                 if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                     if (mouseEvent.getClickCount() == 2) {
-                        System.out.println("Double clicked");
+                        for (int i = viewList.size() - 1; i > viewList.indexOf(listView); i--) {
+                            viewList.remove(i);
+                            try {
+                                filesList.remove(i - 1);
+                            } catch (IndexOutOfBoundsException ex) {
+                                System.out.println("Last file");
+                            }
+                            b.getChildren().remove(column);
+                            column--;
+                        }
                     }
                 }
             }

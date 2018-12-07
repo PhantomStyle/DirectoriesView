@@ -5,11 +5,9 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
@@ -22,12 +20,15 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        ScrollPane scrollPane = new ScrollPane();
         GridPane b = new GridPane();
         Button c = new Button("Load Folder");
         ListViewChanger listViewChanger = new ListViewChanger();
         c.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
+//                listViewChanger.viewList.clear();
+//                listViewChanger.filesList.clear();
                 DirectoryChooser dc = new DirectoryChooser();
                 dc.setInitialDirectory(new File(System.getProperty("user.home")));
                 File choice = dc.showDialog(primaryStage);
@@ -40,6 +41,7 @@ public class Main extends Application {
                     alert.showAndWait();
                 } else {
                     listViewChanger.column = 2;
+                    //TODO: когда заново выбираем, косячим
                     if (listViewChanger.viewList.get(0).getItems().size() != 0) {
                         listViewChanger.viewList.get(0).getItems().clear();
                     }
@@ -52,6 +54,25 @@ public class Main extends Application {
                 }
             }
         });
+//        c.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent mouseEvent) {
+//                if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+//                    if (mouseEvent.getClickCount() == 2) {
+//                        for (int i = listViewChanger.viewList.get(0).size() - 1; i > viewList.indexOf(listView); i--) {
+//                            viewList.remove(i);
+//                            try {
+//                                filesList.remove(i - 1);
+//                            } catch (IndexOutOfBoundsException ex) {
+//                                System.out.println("Last file");
+//                            }
+//                            b.getChildren().remove(column);
+//                            column--;
+//                        }
+//                    }
+//                }
+//            }
+//        });
         b.add(c, 0, 0);
         b.add(listViewChanger.viewList.get(0), 0, 1);
         listViewChanger.viewList.get(0).getSelectionModel().selectedItemProperty()
@@ -67,8 +88,16 @@ public class Main extends Application {
                         b.add(listView, 1, 1);
                     }
                 });
-        primaryStage.setScene(new Scene(b, 600, 400));
+        VBox vBox = new VBox();
+        vBox.getChildren().add(b);
+        scrollPane.setContent(vBox);
+        scrollPane.hvalueProperty().bind(vBox.widthProperty());
+        primaryStage.setScene(new Scene(scrollPane, 600, 400));
         primaryStage.setTitle("Folder View");
         primaryStage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 }
