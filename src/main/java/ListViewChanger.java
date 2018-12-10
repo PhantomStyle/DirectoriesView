@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import jdk.nashorn.internal.objects.NativeUint8Array;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -43,7 +44,8 @@ public class ListViewChanger {
                                 } catch (IndexOutOfBoundsException ex) {
                                     System.out.println("Last file");
                                 }
-                                b.getChildren().remove(column);
+//                                b.getChildren().remove(column);
+                                b.getChildren().removeIf(node -> GridPane.getColumnIndex(node) == column);
                                 column--;
                             }
                         }
@@ -61,8 +63,12 @@ public class ListViewChanger {
                         if (selectedFile.isDirectory()) {
                             viewList.add(listViewNew);
                             File[] files = selectedFile.listFiles();
-                            for (File f : files) {
-                                viewList.get(column).getItems().add(f.getName());
+                            try {
+                                for (File f : files) {
+                                    viewList.get(column).getItems().add(f.getName());
+                                }
+                            } catch (NullPointerException ex){
+                                System.out.println("Just nullpointer. Don't worry");
                             }
                             filesList.add(selectedFile);
                             b.add(listViewNew, column++, 1);
@@ -73,11 +79,11 @@ public class ListViewChanger {
         listView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
-                    if (mouseEvent.getClickCount() == 2) {
+                if (mouseEvent.getButton().equals(MouseButton.SECONDARY)) {
+//                    if (mouseEvent.getClickCount() == 2) {
                         int size = viewList.size();
                         int index = viewList.indexOf(listView);
-                        for (int i = viewList.size() - 1; i > index; i--) {
+                        for (int i = viewList.size() - 1; i >= index + 1; i--) {
                             viewList.remove(i);
 //                            b.getChildren().remove(viewList.remove(i));
                             try {
@@ -85,10 +91,10 @@ public class ListViewChanger {
                             } catch (IndexOutOfBoundsException ex) {
                                 System.out.println("Last file");
                             }
-                            b.getChildren().remove(column);
+                            b.getChildren().removeIf(node -> GridPane.getColumnIndex(node) == column - 1);
                             column--;
                         }
-                    }
+//                    }
                 }
             }
         });
