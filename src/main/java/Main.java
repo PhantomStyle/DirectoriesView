@@ -67,72 +67,29 @@ public class Main extends Application {
                     name = name.replace("\\", "");
                     listViewChanger.viewList.get(0).getItems().addAll(name);
                     listViewChanger.filesList.add(new File(choice.getAbsolutePath()));
-                    listViewChanger.viewList.get(0).setOnMouseClicked(new EventHandler<MouseEvent>() {
-                        @Override
-                        public void handle(MouseEvent mouseEvent) {
-                            if (mouseEvent.getButton().equals(MouseButton.SECONDARY)) {
-                                int index = listViewChanger.viewList.indexOf(listViewChanger.viewList.get(0));
-                                for (int i = listViewChanger.viewList.size() - 1; i >= index + 1; i--) {
-                                    listViewChanger.viewList.remove(i);
-                                    try {
-                                        listViewChanger.filesList.remove(i - 1);
-                                    } catch (IndexOutOfBoundsException ex) {
-                                        System.out.println("Last file");
-                                    }
-                                    b.getChildren().removeIf(node -> GridPane.getColumnIndex(node) == listViewChanger.column - 1);
-                                    listViewChanger.column--;
-                                }
-                            }
-//                            if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
-//                                listViewChanger.viewList.get(0).getSelectionModel().selectedItemProperty()
-//                                        .addListener(new ChangeListener<String>() {
-//                                            public void changed(ObservableValue<? extends String> observable,
-//                                                                String oldValue, String newValue) {
-//                                                if (listViewChanger.viewList.indexOf(listViewChanger.viewList.get(0)) < listViewChanger.viewList.size() - 1) {
-//                                                    int size = listViewChanger.viewList.size();
-//                                                    for (int i = listViewChanger.viewList.size() - 1; i >= listViewChanger.viewList.indexOf(listViewChanger.viewList.get(0)) + 1; i--) {
-//                                                        listViewChanger.viewList.remove(i);
-////                                b.getChildren().remove(viewList.remove(i));
-//                                                        try {
-//                                                            listViewChanger.filesList.remove(i - 1);
-//                                                        } catch (IndexOutOfBoundsException ex) {
-//                                                            System.out.println("Last file");
-//                                                        }
-////                                b.getChildren().remove(column);
-//                                                        b.getChildren().removeIf(node -> GridPane.getColumnIndex(node) == listViewChanger.column);
-//                                                        listViewChanger.column--;
-//                                                    }
-//                                                }
-//                                                ListView<String> listViewNew = listViewChanger.getNewListView(b);
-//
-//                                                String name = "";
-//                                                if (listViewChanger.filesList.get(listViewChanger.filesList.size() - 1).getAbsolutePath().endsWith("\\")) {
-//                                                    name = listViewChanger.filesList.get(listViewChanger.filesList.size() - 1).getAbsolutePath()
-//                                                            + listViewChanger.viewList.get(listViewChanger.column - 1).getSelectionModel().getSelectedItems().get(0);
-//                                                } else {
-//                                                    name = listViewChanger.filesList.get(listViewChanger.filesList.size() - 1).getAbsolutePath() + "\\"
-//                                                            + listViewChanger.viewList.get(listViewChanger.column - 1).getSelectionModel().getSelectedItems().get(0);
-//                                                }
-//                                                File selectedFile = new File(name);
-//                                                if (selectedFile.isDirectory()) {
-//                                                    listViewChanger.viewList.add(listViewNew);
-//                                                    File[] files = selectedFile.listFiles();
-//                                                    try {
-//                                                        for (File f : files) {
-//                                                            listViewChanger.viewList.get(listViewChanger.column).getItems().add(f.getName());
-//                                                        }
-//                                                    } catch (NullPointerException ex){
-//                                                        System.out.println("Just nullpointer. Don't worry");
-//                                                    }
-//                                                    listViewChanger.filesList.add(selectedFile);
-//                                                    b.add(listViewNew, listViewChanger.column++, 1);
-//                                                }
-////                        }
-//                                            }
-//                                        });
+//                    listViewChanger.viewList.get(0).setOnMouseClicked(new EventHandler<MouseEvent>() {
+//                        @Override
+//                        public void handle(MouseEvent mouseEvent) {
+//                            if (mouseEvent.getButton().equals(MouseButton.SECONDARY)) {
+//                                int index = listViewChanger.viewList.indexOf(listViewChanger.viewList.get(0));
+//                                for (int i = listViewChanger.viewList.size() - 1; i >= index + 1; i--) {
+//                                    listViewChanger.viewList.remove(i);
+//                                    try {
+//                                        listViewChanger.filesList.remove(i - 1);
+//                                    } catch (IndexOutOfBoundsException ex) {
+//                                        System.out.println("Last file");
+//                                    }
+//                                    b.getChildren().removeIf(node -> GridPane.getColumnIndex(node) == listViewChanger.column - 1);
+//                                    listViewChanger.column--;
+//                                }
+////                                try {
+////                                    listViewChanger.viewList.get(0).getSelectionModel().clearSelection();
+////                                } catch (Exception ex){
+////                                    System.out.println(ex.getMessage());
+////                                }
 //                            }
-                        }
-                    });
+//                        }
+//                    });
                 }
             }
         });

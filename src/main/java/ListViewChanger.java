@@ -67,7 +67,7 @@ public class ListViewChanger {
                                 for (File f : files) {
                                     viewList.get(column).getItems().add(f.getName());
                                 }
-                            } catch (NullPointerException ex){
+                            } catch (NullPointerException ex) {
                                 System.out.println("Just nullpointer. Don't worry");
                             }
                             filesList.add(selectedFile);
@@ -81,20 +81,21 @@ public class ListViewChanger {
             public void handle(MouseEvent mouseEvent) {
                 if (mouseEvent.getButton().equals(MouseButton.SECONDARY)) {
 //                    if (mouseEvent.getClickCount() == 2) {
-                        int size = viewList.size();
-                        int index = viewList.indexOf(listView);
-                        for (int i = viewList.size() - 1; i >= index + 1; i--) {
-                            viewList.remove(i);
+                    int size = viewList.size();
+                    int index = viewList.indexOf(listView);
+                    for (int i = viewList.size() - 1; i >= index + 1; i--) {
+                        viewList.remove(i);
 //                            b.getChildren().remove(viewList.remove(i));
-                            try {
-                                filesList.remove(i - 1);
-                            } catch (IndexOutOfBoundsException ex) {
-                                System.out.println("Last file");
-                            }
-                            b.getChildren().removeIf(node -> GridPane.getColumnIndex(node) == column - 1);
-                            column--;
+                        try {
+                            filesList.remove(i - 1);
+                        } catch (IndexOutOfBoundsException ex) {
+                            System.out.println("Last file");
                         }
+                        b.getChildren().removeIf(node -> GridPane.getColumnIndex(node) == column - 1);
+                        column--;
+                    }
 //                    }
+                    viewList.get(column - 1).getSelectionModel().clearSelection();
                 }
             }
         });
