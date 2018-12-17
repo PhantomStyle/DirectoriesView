@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 import jdk.nashorn.internal.objects.NativeUint8Array;
 
 import java.io.File;
@@ -21,6 +22,7 @@ public class ListViewChanger {
 
     public final List<ListView<String>> viewList;
     public final List<File> filesList;
+    public Text currentPath = new Text();
 
     public ListViewChanger() {
         viewList = new ArrayList<>();
@@ -73,7 +75,11 @@ public class ListViewChanger {
                             filesList.add(selectedFile);
                             b.add(listViewNew, column++, 1);
                         }
-//                        }
+                        else {
+//                            viewList.remove(viewList.get(viewList.size() - 1));
+                            b.getChildren().removeIf(node -> GridPane.getColumnIndex(node) == column);
+                        }
+                        currentPath.setText(name);
                     }
                 });
         listView.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -96,6 +102,7 @@ public class ListViewChanger {
                     }
 //                    }
                     viewList.get(column - 1).getSelectionModel().clearSelection();
+                    currentPath.setText(filesList.get(filesList.size() - 1).getAbsolutePath());
                 }
             }
         });

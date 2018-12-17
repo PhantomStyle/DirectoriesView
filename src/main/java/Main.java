@@ -36,11 +36,10 @@ public class Main extends Application {
         c.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-//                listViewChanger.viewList.clear();
-//                listViewChanger.filesList.clear();
                 DirectoryChooser dc = new DirectoryChooser();
                 dc.setInitialDirectory(new File(System.getProperty("user.home")));
                 File choice = dc.showDialog(primaryStage);
+                listViewChanger.currentPath.setText(choice.getAbsolutePath());
                 listViewChanger.filesList.add(choice);
                 if (choice == null || !choice.isDirectory()) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -54,65 +53,17 @@ public class Main extends Application {
                     if (listViewChanger.viewList.get(0).getItems().size() != 0) {
                         listViewChanger.viewList.get(0).getItems().clear();
                     }
-                    int size = listViewChanger.viewList.size();
                     for (int i = listViewChanger.viewList.size() - 1; i >= 1; i--) {
                         b.getChildren().remove(listViewChanger.viewList.remove(i));
                     }
-//                    for (int i = listViewChanger.filesList.size() - 1; i >= 1; i--) {
-//                        listViewChanger.filesList.remove(i);
-//                    }
                     listViewChanger.filesList.clear();
-//                    b.getChildren().clear();
                     String name = choice.getName().equals("") ? choice.getAbsolutePath() : choice.getName();
                     name = name.replace("\\", "");
                     listViewChanger.viewList.get(0).getItems().addAll(name);
                     listViewChanger.filesList.add(new File(choice.getAbsolutePath()));
-//                    listViewChanger.viewList.get(0).setOnMouseClicked(new EventHandler<MouseEvent>() {
-//                        @Override
-//                        public void handle(MouseEvent mouseEvent) {
-//                            if (mouseEvent.getButton().equals(MouseButton.SECONDARY)) {
-//                                int index = listViewChanger.viewList.indexOf(listViewChanger.viewList.get(0));
-//                                for (int i = listViewChanger.viewList.size() - 1; i >= index + 1; i--) {
-//                                    listViewChanger.viewList.remove(i);
-//                                    try {
-//                                        listViewChanger.filesList.remove(i - 1);
-//                                    } catch (IndexOutOfBoundsException ex) {
-//                                        System.out.println("Last file");
-//                                    }
-//                                    b.getChildren().removeIf(node -> GridPane.getColumnIndex(node) == listViewChanger.column - 1);
-//                                    listViewChanger.column--;
-//                                }
-////                                try {
-////                                    listViewChanger.viewList.get(0).getSelectionModel().clearSelection();
-////                                } catch (Exception ex){
-////                                    System.out.println(ex.getMessage());
-////                                }
-//                            }
-//                        }
-//                    });
                 }
             }
         });
-
-//        c.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent mouseEvent) {
-//                if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
-//                    if (mouseEvent.getClickCount() == 2) {
-//                        for (int i = listViewChanger.viewList.get(0).size() - 1; i > viewList.indexOf(listView); i--) {
-//                            viewList.remove(i);
-//                            try {
-//                                filesList.remove(i - 1);
-//                            } catch (IndexOutOfBoundsException ex) {
-//                                System.out.println("Last file");
-//                            }
-//                            b.getChildren().remove(column);
-//                            column--;
-//                        }
-//                    }
-//                }
-//            }
-//        });
         b.add(c, 0, 0);
         b.add(listViewChanger.viewList.get(0), 0, 1);
         listViewChanger.viewList.get(0).getSelectionModel().selectedItemProperty()
@@ -126,9 +77,6 @@ public class Main extends Application {
                         for (File f : files) {
                             listViewChanger.viewList.get(1).getItems().add(f.getName());
                         }
-//                        } catch (Exception ex) {
-//                            System.out.println("Just ex.");
-//                        }
                         b.add(listView, 1, 1);
                     }
                 });
@@ -176,6 +124,7 @@ public class Main extends Application {
         });
 
         VBox vBox = new VBox();
+        vBox.getChildren().add(listViewChanger.currentPath);
         vBox.getChildren().add(b);
         scrollPane.setContent(vBox);
         scrollPane.hvalueProperty().bind(vBox.widthProperty());
