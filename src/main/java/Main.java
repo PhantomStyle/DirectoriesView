@@ -33,6 +33,8 @@ public class Main extends Application {
         textButton.setText("Find");
         Button c = new Button("Load Folder");
         ListViewChanger listViewChanger = new ListViewChanger();
+        listViewChanger.buttonList.add(textButton);
+        listViewChanger.textFieldList.add(textField);
         c.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -55,6 +57,13 @@ public class Main extends Application {
                     }
                     for (int i = listViewChanger.viewList.size() - 1; i >= 1; i--) {
                         b.getChildren().remove(listViewChanger.viewList.remove(i));
+                    }
+                    for (int i = listViewChanger.buttonList.size() - 1; i >= 1; i--) {
+                        b.getChildren().remove(listViewChanger.buttonList.remove(i));
+                        b.getChildren().remove(listViewChanger.textFieldList.remove(i));
+                    }
+                    for (int i = listViewChanger.textFieldList.size() - 1; i >= 1; i--) {
+                        b.getChildren().remove(listViewChanger.textFieldList.remove(i));
                     }
                     listViewChanger.filesList.clear();
                     String name = choice.getName().equals("") ? choice.getAbsolutePath() : choice.getName();
@@ -95,9 +104,9 @@ public class Main extends Application {
                     return;
                 }
                 String desiredFileName = textField.getText();
-                File file = listViewChanger.filesList.get(listViewChanger.filesList.size() - 1);
+                File file = listViewChanger.filesList.get(listViewChanger.filesList.size() - 2);
                 if (file.getName().contains(".")) {
-                    file = listViewChanger.filesList.get(listViewChanger.filesList.size() - 2);
+                    file = listViewChanger.filesList.get(listViewChanger.filesList.size() - 3);
                 }
                 searchFile(file, desiredFileName);
                 if (findedFiles.isEmpty()) {
@@ -141,16 +150,7 @@ public class Main extends Application {
         File[] directories = directory.listFiles();
         try {
             for (File file : directories) {
-                if (file.isDirectory()) {
-                    String[] folders = file.getAbsolutePath().split("\\\\");
-                    for (String folder : folders) {
-                        if (folder.equals(desiredFileName)) {
-                            findedFiles.add(file.getAbsolutePath());
-                            break;
-                        }
-                    }
-                    searchFile(file, desiredFileName);
-                } else if (file.getName().equals(desiredFileName)) {
+                if (file.getName().equalsIgnoreCase(desiredFileName)) {
                     findedFiles.add(file.getAbsolutePath());
                 }
             }
