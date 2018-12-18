@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -55,17 +56,24 @@ public class Main extends Application {
                     if (listViewChanger.viewList.get(0).getItems().size() != 0) {
                         listViewChanger.viewList.get(0).getItems().clear();
                     }
-                    for (int i = listViewChanger.viewList.size() - 1; i >= 1; i--) {
-                        b.getChildren().remove(listViewChanger.viewList.remove(i));
-                    }
-                    for (int i = listViewChanger.buttonList.size() - 1; i >= 1; i--) {
-                        b.getChildren().remove(listViewChanger.buttonList.remove(i));
-                        b.getChildren().remove(listViewChanger.textFieldList.remove(i));
-                    }
-                    for (int i = listViewChanger.textFieldList.size() - 1; i >= 1; i--) {
-                        b.getChildren().remove(listViewChanger.textFieldList.remove(i));
-                    }
-                    listViewChanger.filesList.clear();
+//                    for (int i = listViewChanger.viewList.size() - 1; i >= 1; i--) {
+//                        ListView<String> view = listViewChanger.viewList.get(i);
+//                        b.getChildren().remove(view);
+//                        listViewChanger.viewList.remove(i);
+//                    }
+//                    for (int i = listViewChanger.buttonList.size() - 1; i >= 1; i--) {
+//                        Button button = listViewChanger.buttonList.get(i);
+//                        b.getChildren().remove(button);
+//                        listViewChanger.buttonList.remove(i);
+//                    }
+//                    for (int i = listViewChanger.textFieldList.size() - 1; i >= 1; i--) {
+//                        TextField text = listViewChanger.textFieldList.get(i);
+//                        b.getChildren().remove(text);
+//                        listViewChanger.textFieldList.remove(i);
+//                    }
+
+                    listViewChanger.clearAllLists(b);
+//                    listViewChanger.filesList.clear();
                     String name = choice.getName().equals("") ? choice.getAbsolutePath() : choice.getName();
                     name = name.replace("\\", "");
                     listViewChanger.viewList.get(0).getItems().addAll(name);

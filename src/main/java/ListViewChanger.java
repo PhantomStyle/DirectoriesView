@@ -52,7 +52,6 @@ public class ListViewChanger {
                                 viewList.remove(i);
                                 buttonList.remove(i);
                                 textFieldList.remove(i);
-//                                b.getChildren().remove(viewList.remove(i));
                                 try {
                                     filesList.remove(i - 1);
                                 } catch (IndexOutOfBoundsException ex) {
@@ -126,6 +125,7 @@ public class ListViewChanger {
         textButton.setText("Find");
         buttonList.add(textButton);
         textFieldList.add(textField);
+        String tempPath = filesList.get(filesList.size() - 1).getAbsolutePath();
         textButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
@@ -141,7 +141,8 @@ public class ListViewChanger {
                     return;
                 }
                 String desiredFileName = textField.getText();
-                File file = filesList.get(textFieldList.indexOf(textField)/2 - 1);
+                File file = new File(tempPath);
+//                File file = filesList.get(textFieldList.indexOf(textField)/2 - 1);
                 findedFiles = searchFile(file, desiredFileName);
                 if (findedFiles.isEmpty()) {
                     Stage st = new Stage();
@@ -166,7 +167,10 @@ public class ListViewChanger {
             }
         });
 
-        if (!filesList.get(filesList.size() - 1).getName().contains(".")) {
+        File tempFile = new File(tempPath + "\\" + viewList.get(viewList.size() - 1).getSelectionModel().getSelectedItems().get(0));
+        if (tempFile.isDirectory()) {
+//        if (!filesList.get(filesList.size() - 1).getName().contains(".")) {
+//        if (viewList.size() > filesList.size()) {
             TextField textFieldNext = new TextField();
             Button textButtonNext = new Button();
             b.add(textFieldNext, column, 5);
@@ -189,7 +193,8 @@ public class ListViewChanger {
                         return;
                     }
                     String desiredFileName = textFieldNext.getText();
-                    File file = filesList.get(textFieldList.indexOf(textFieldNext)/2 - 1);
+                    File file = filesList.get(filesList.indexOf(tempFile));
+//                    File file = filesList.get(textFieldList.indexOf(textFieldNext)/2 - 1);
                     findedFiles = searchFile(file, desiredFileName);
                     if (findedFiles.isEmpty()) {
                         Stage st = new Stage();
@@ -230,5 +235,38 @@ public class ListViewChanger {
             System.out.println("Just nullpointer");
         }
         return findedFiles;
+    }
+
+    private void clearViews(GridPane b){
+        for (int i = viewList.size() - 1; i >= 1; i--) {
+            ListView<String> view = viewList.get(i);
+            b.getChildren().remove(view);
+            viewList.remove(i);
+        }
+    }
+
+    private void clearButtons(GridPane b){
+        for (int i = buttonList.size() - 1; i >= 1; i--) {
+            Button button = buttonList.get(i);
+            b.getChildren().remove(button);
+            buttonList.remove(i);
+        }
+    }
+
+    private void clearTextFields(GridPane b){
+        for (int i = textFieldList.size() - 1; i >= 1; i--) {
+            TextField textField = textFieldList.get(i);
+            b.getChildren().remove(textField);
+            textFieldList.remove(i);
+        }
+    }
+
+    public void clearAllLists(GridPane b){
+        for(int i = 0; i < 10; i++) {
+            clearViews(b);
+            clearButtons(b);
+            clearTextFields(b);
+            filesList.clear();
+        }
     }
 }
