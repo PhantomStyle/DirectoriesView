@@ -238,25 +238,31 @@ public class ListViewChanger {
     }
 
     private void clearViews(GridPane b){
+        System.out.println(viewList.size());
         for (int i = viewList.size() - 1; i >= 1; i--) {
             ListView<String> view = viewList.get(i);
             b.getChildren().remove(view);
+            System.out.println(b.getChildren().contains(view) + " view contains");
             viewList.remove(i);
         }
     }
 
     private void clearButtons(GridPane b){
+        System.out.println(buttonList.size());
         for (int i = buttonList.size() - 1; i >= 1; i--) {
             Button button = buttonList.get(i);
             b.getChildren().remove(button);
+            System.out.println(b.getChildren().contains(button) + " button contains");
             buttonList.remove(i);
         }
     }
 
     private void clearTextFields(GridPane b){
+        System.out.println(textFieldList.size());
         for (int i = textFieldList.size() - 1; i >= 1; i--) {
             TextField textField = textFieldList.get(i);
             b.getChildren().remove(textField);
+            System.out.println(b.getChildren().contains(textField) + " text field");
             textFieldList.remove(i);
         }
     }

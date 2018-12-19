@@ -51,11 +51,16 @@ public class Main extends Application {
 
                     alert.showAndWait();
                 } else {
+                    b.getChildren().clear();
                     listViewChanger.column = 2;
                     //TODO: на начальную вьюху повесить функционал с удалением
                     if (listViewChanger.viewList.get(0).getItems().size() != 0) {
                         listViewChanger.viewList.get(0).getItems().clear();
                     }
+                    b.add(c, 0, 0);
+                    b.add(listViewChanger.viewList.get(0), 0, 1);
+                    b.add(textField, 0, 5);
+                    b.add(textButton, 0, 6);
 //                    for (int i = listViewChanger.viewList.size() - 1; i >= 1; i--) {
 //                        ListView<String> view = listViewChanger.viewList.get(i);
 //                        b.getChildren().remove(view);
@@ -71,6 +76,10 @@ public class Main extends Application {
 //                        b.getChildren().remove(text);
 //                        listViewChanger.textFieldList.remove(i);
 //                    }
+//                    b.setGridLinesVisible(false);
+//                    textField.setVisible(true);
+//                    textButton.setVisible(true);
+                    listViewChanger.viewList.get(0).setVisible(true);
 
                     listViewChanger.clearAllLists(b);
 //                    listViewChanger.filesList.clear();
